@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav";
 import { ClerkProvider } from "@clerk/nextjs";
+import styles from '../styles/SignIn.module.css'
+import { Sign } from "crypto";
 
 const inter = Inter({ subsets: ["latin"] });
 
