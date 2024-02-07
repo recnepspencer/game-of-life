@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main>
       <h1>
-        Next.js Auth Tutorial
+        The game of life
       </h1>
     </main>
   );

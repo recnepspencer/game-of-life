@@ -7,7 +7,7 @@ export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 
-// This function lists which route do not reqire a login
+// This function lists which routes do not reqire a login
 export default authMiddleware({
   publicRoutes: ['/']
 })

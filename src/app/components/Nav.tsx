@@ -26,8 +26,8 @@ export default function Nav() {
         
           {isLoaded && !user && (
             <div className="flex space-x-4">
-              <SignInButton afterSignInUrl="/dashboard" className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800"/>
-              <SignUpButton afterSignUpUrl="/dashboard" className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800"/>
+              <SignInButton><button className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800">Log in</button></SignInButton>
+              <SignUpButton><button className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800">Sign In</button></SignUpButton>
             </div>
           )}
 
