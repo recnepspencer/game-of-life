@@ -21,7 +21,7 @@ export default function Nav() {
               <UserButton afterSignOutUrl="/">Sign out</UserButton>
             </div>
           )}
-          {/* If we are not logged in, we display the sign in and sign up buttons */}
+          {/* If we are not logged in, we display the sign in and sign up buttonsd */}
        
         
           {isLoaded && !user && (
