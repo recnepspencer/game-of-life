@@ -50,7 +50,7 @@ async function handler(request: Request) {
       const lastName = userData.last_name;
       const externalId = userData.id; // Use Clerk's user ID as external ID
 
-      // Use Prisma client to upsert user data based on the external ID
+      // Use Prisma client to upsert user data based on the external ID.
       await prisma.user.upsert({
         where: { externalId: externalId },
         update: {
