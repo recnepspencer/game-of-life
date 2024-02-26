@@ -9,5 +9,5 @@ export const config = {
 
 // This function lists which routes do not reqire a login
 export default authMiddleware({
-  publicRoutes: ['/']
+  publicRoutes: ["/", "/api/webhooks(.*)"]
 })

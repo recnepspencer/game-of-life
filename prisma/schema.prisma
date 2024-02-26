@@ -1,23 +1,33 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgres"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Inquiry {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  company   String
-  message   String
-  createdAt DateTime @default(now())
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  firstName         String
+  lastName          String
+  externalId        String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  gamesPlayed Int         @default(0)
+  gamesWon    Int         @default(0)
+  gameSessions GameSession[]
+}
+
+model GameSession {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  result      String      // e.g., "win", "lose", or "draw"
 }

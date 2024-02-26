@@ -2,10 +2,10 @@
 import { UserButton, useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
-
 export default function Nav() {
   // We use the useUser hook to get the user object and the isLoaded boolean. This is built in when we install Clerk. The isLoaded boolean is used to check if the user object is loaded before we display the dashboard.
   const { user, isLoaded } = useUser();
+
 
   return (
     <header>
@@ -27,7 +27,7 @@ export default function Nav() {
           {isLoaded && !user && (
             <div className="flex space-x-4">
               <SignInButton><button className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800">Log in</button></SignInButton>
-              <SignUpButton><button className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800">Sign In</button></SignUpButton>
+              <SignUpButton><button className="bg-red-800 p-2 rounded-md cursor-pointer hover:bg-red-300 active:bg-white active:text-red-800">Sign Up</button></SignUpButton>
             </div>
           )}
 
