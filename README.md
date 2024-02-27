@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Overview
 
-## Getting Started
+<p>I attempted to migrate the project I've been working on so far to AWS. </p>
 
-First, run the development server:
+<p>I did this because I believe being dynamic in my skills and abilities will make me attractive to employers. I think even if you are a developer who works on a very specific piece of the pie, you are more useful if you know how the whole assembly line works. Even if it just makes you better at troubleshooting, I think it is worth getting a broad knowledge.  </p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<h3>Youtube Link</h3>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[Software Demo Video](https://youtu.be/iBaFNa68AiI)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Cloud Database
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+I used AWS RDS to create a database. I used MySQL as the database engine. I used the free tier, so I didn't have to pay for it. The setup was really hard. I had to set up security groups, an ec2 instance, a whole virtual machine without a gui to set up the enviornment, a domain name, and an elastic IP. It was one of the more difficult projects I've done. I don't think there was any one piece that was hard. It is more like solving a 1000 piece puzzle. It is hard to do, but not because any one piece is hard.
 
-## Learn More
+# Development Environment
 
-To learn more about Next.js, take a look at the following resources:
+-- AWS RDS
+-- AWS EC2
+-- AWS Elastic IP
+-- AWS Security Groups
+-- AWS Route 53
+-- Ubuntu Server 
+-- MySQL
+-- composer
+-- php
+-- apache2
+-- laravel 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+# Useful Websites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+{Make a list of websites that you found helpful in this project}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Chat Gpt](https://chat.openai.com/?model=gpt-4)
+- [Stack Overflow](https://stackoverflow.com/)
+
+# Future Work
+
+
+- Deploy Front End
+- Fix the CORS bug 
+- Set up a way to manage production and development code so that i can launch updates to the web
