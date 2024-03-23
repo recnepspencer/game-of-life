@@ -33,3 +33,14 @@ model GameSession {
   user      User     @relation(fields: [userId], references: [id])
   result    String // e.g., "win", "lose", or "draw"
 }
+
+model FakeUser {
+  id           Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  gamesPlayed  Int           @default(0)
+  gamesWon     Int           @default(0)
+  gamesLost    Int           @default(0)
+  gamesDrawn   Int           @default(0)
+  about        String?
+}

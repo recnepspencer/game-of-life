@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+
 function AboutCard() {
     // Initialize state for user data
     const [userData, setUserData] = useState({
