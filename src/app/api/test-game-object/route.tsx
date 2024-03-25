@@ -1,6 +1,6 @@
 // pages/api/test-game-object.ts
 
-import type { NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/db';
 
 interface GridRequestBody {
@@ -8,45 +8,34 @@ interface GridRequestBody {
   gridData: number[][];
 }
 
-interface ApiResponseData {
-  error?: string;
-  data?: any; // You can define a more specific type based on your data structure
-}
-
-async function gridHandler(req: Request, res: NextApiResponse<ApiResponseData>) {
+async function gridHandler(req: Request, res: NextApiResponse) {
   if (req.method === 'POST') {
-    let payload: GridRequestBody;
+    const payload = await req.json();
+    const { id, gridData } = payload as GridRequestBody;
 
     try {
-      payload = await req.json() as GridRequestBody;
-    } catch (error) {
-      console.error('Error parsing JSON:', error);
-      return res.status(400).json({ error: 'Bad request' });
-    }
-
-    try {
-      const { id, gridData } = payload;
-      
-      if (!id || !gridData) {
-        console.error('Missing id or gridData');
-        return res.status(400).json({ error: 'Missing id or gridData' });
-      }
-
-      const serializedData = JSON.stringify(gridData);
-      const gridEntry = await prisma.testGameObject.create({
+      const gameObj = await prisma.testGameObject.create({
         data: {
           id,
-          gridData: serializedData,
+          gridData: JSON.stringify(gridData),
         },
       });
 
-      res.status(200).json({ data: gridEntry });
+      return new Response(JSON.stringify({ data: gameObj }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     } catch (error) {
-      console.error('Error saving grid data:', error);
-      res.status(500).json({ error: 'Error saving grid data' });
+      return new Response(JSON.stringify({ error: 'Error saving grid' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+    return new Response(JSON.stringify({ error: 'Method Not Allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
