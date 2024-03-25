@@ -34,6 +34,8 @@ model GameSession {
   result    String // e.g., "win", "lose", or "draw"
 }
 
+
+
 model FakeUser {
   firstName  String
   id         Int     @id @default(autoincrement())
