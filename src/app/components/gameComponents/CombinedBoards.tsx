@@ -3,20 +3,16 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 const scale = 10;
-const userBoardHeight = 32;
-const userBoardWidth = 64;
+const boardSize = 64;
 
 const CombinedBoards: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [userList1, setUserList1] = useState<number[][]>(
-    Array.from({ length: userBoardHeight }, () => Array(userBoardWidth).fill(0))
-  );
-  const [userList2, setUserList2] = useState<number[][]>(
-    Array.from({ length: userBoardHeight }, () => Array(userBoardWidth).fill(0))
+  const [combinedBoard, setCombinedBoard] = useState<number[][]>(
+    Array.from({ length: boardSize }, () => Array(boardSize).fill(0))
   );
 
   useEffect(() => {
-    const loadGameBoard = async (id: number, setUserList: (data: number[][]) => void) => {
+    const loadGameBoard = async (id: number, offset: number) => {
       try {
         const response = await fetch(`/api/test-game-object/load-game-object?id=${id}`, {
           method: 'GET',
@@ -26,7 +22,16 @@ const CombinedBoards: React.FC = () => {
         });
         const result = await response.json();
         if (response.ok) {
-          setUserList(result.gridData);
+          const gridData = result.gridData;
+          setCombinedBoard((prevBoard) => {
+            const newBoard = [...prevBoard];
+            for (let i = 0; i < gridData.length; i++) {
+              for (let j = 0; j < gridData[i].length; j++) {
+                newBoard[i + offset][j] = gridData[i][j];
+              }
+            }
+            return newBoard;
+          });
         } else {
           throw new Error(result.error || 'Failed to load grid');
         }
@@ -35,8 +40,8 @@ const CombinedBoards: React.FC = () => {
       }
     };
 
-    loadGameBoard(3, setUserList1);
-    loadGameBoard(4, setUserList2);
+    loadGameBoard(3, 0);
+    loadGameBoard(4, boardSize / 2);
   }, []);
 
   useEffect(() => {
@@ -44,8 +49,8 @@ const CombinedBoards: React.FC = () => {
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        canvas.width = userBoardWidth * scale;
-        canvas.height = userBoardHeight * scale * 2;
+        canvas.width = boardSize * scale;
+        canvas.height = boardSize * scale;
         canvas.style.width = `${canvas.width}px`;
         canvas.style.height = `${canvas.height}px`;
         render(ctx);
@@ -62,63 +67,62 @@ const CombinedBoards: React.FC = () => {
 
         const gameLoop = () => {
           genCount++;
-          let boardCopy = structuredClone(userList1);
+          let boardCopy = structuredClone(combinedBoard);
 
-          for (let i = 0; i < userBoardHeight; i++) {
-            for (let j = 0; j < userBoardWidth; j++) {
+          for (let i = 0; i < boardSize; i++) {
+            for (let j = 0; j < boardSize; j++) {
               let player1 = 0;
+              let player2 = 0;
+
+              // Count neighbors for player 1
               if (i > 0 && j > 0 && boardCopy[i - 1][j - 1] === 1) player1++;
               if (i > 0 && boardCopy[i - 1][j] === 1) player1++;
-              if (i > 0 && j < userBoardWidth - 1 && boardCopy[i - 1][j + 1] === 1) player1++;
-
+              if (i > 0 && j < boardSize - 1 && boardCopy[i - 1][j + 1] === 1) player1++;
               if (j > 0 && boardCopy[i][j - 1] === 1) player1++;
-              if (j < userBoardWidth - 1 && boardCopy[i][j + 1] === 1) player1++;
+              if (j < boardSize - 1 && boardCopy[i][j + 1] === 1) player1++;
+              if (i < boardSize - 1 && j > 0 && boardCopy[i + 1][j - 1] === 1) player1++;
+              if (i < boardSize - 1 && boardCopy[i + 1][j] === 1) player1++;
+              if (i < boardSize - 1 && j < boardSize - 1 && boardCopy[i + 1][j + 1] === 1) player1++;
 
-              if (i < userBoardHeight - 1 && j > 0 && boardCopy[i + 1][j - 1] === 1) player1++;
-              if (i < userBoardHeight - 1 && boardCopy[i + 1][j] === 1) player1++;
-              if (i < userBoardHeight - 1 && j < userBoardWidth - 1 && boardCopy[i + 1][j + 1] === 1) player1++;
-
-              let player2 = 0;
-              if (i > 0 && j > 0 && userList2[i - 1][j - 1] === 1) player2++;
-              if (i > 0 && userList2[i - 1][j] === 1) player2++;
-              if (i > 0 && j < userBoardWidth - 1 && userList2[i - 1][j + 1] === 1) player2++;
-
-              if (j > 0 && userList2[i][j - 1] === 1) player2++;
-              if (j < userBoardWidth - 1 && userList2[i][j + 1] === 1) player2++;
-
-              if (i < userBoardHeight - 1 && j > 0 && userList2[i + 1][j - 1] === 1) player2++;
-              if (i < userBoardHeight - 1 && userList2[i + 1][j] === 1) player2++;
-              if (i < userBoardHeight - 1 && j < userBoardWidth - 1 && userList2[i + 1][j + 1] === 1) player2++;
+              // Count neighbors for player 2
+              if (i > 0 && j > 0 && boardCopy[i - 1][j - 1] === 2) player2++;
+              if (i > 0 && boardCopy[i - 1][j] === 2) player2++;
+              if (i > 0 && j < boardSize - 1 && boardCopy[i - 1][j + 1] === 2) player2++;
+              if (j > 0 && boardCopy[i][j - 1] === 2) player2++;
+              if (j < boardSize - 1 && boardCopy[i][j + 1] === 2) player2++;
+              if (i < boardSize - 1 && j > 0 && boardCopy[i + 1][j - 1] === 2) player2++;
+              if (i < boardSize - 1 && boardCopy[i + 1][j] === 2) player2++;
+              if (i < boardSize - 1 && j < boardSize - 1 && boardCopy[i + 1][j + 1] === 2) player2++;
 
               if (boardCopy[i][j] === 1) {
                 if (player1 + player2 > maxNeighbors) {
-                  userList1[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 } else if (player1 < requiredAllies) {
-                  userList1[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 } else if (player2 - player1 > defectCount) {
-                  userList1[i][j] = 0;
-                  userList2[i][j] = 1;
+                  combinedBoard[i][j] = 0;
+                  combinedBoard[i][j] = 2;
                 } else if (player2 - player1 > killCount) {
-                  userList1[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 }
-              } else if (userList2[i][j] === 1) {
+              } else if (boardCopy[i][j] === 2) {
                 if (player1 + player2 > maxNeighbors) {
-                  userList2[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 } else if (player2 < requiredAllies) {
-                  userList2[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 } else if (player1 - player2 > defectCount) {
-                  userList2[i][j] = 0;
-                  userList1[i][j] = 1;
+                  combinedBoard[i][j] = 0;
+                  combinedBoard[i][j] = 1;
                 } else if (player1 - player2 > killCount) {
-                  userList2[i][j] = 0;
+                  combinedBoard[i][j] = 0;
                 }
               } else {
                 if (player1 + player2 > tooManyNeighbors) {
                   // Stay dead
                 } else if (player2 - player1 > 0 && player2 > requiredNeighbors) {
-                  userList2[i][j] = 1;
+                  combinedBoard[i][j] = 2;
                 } else if (player1 - player2 > 0 && player1 > requiredNeighbors) {
-                  userList1[i][j] = 1;
+                  combinedBoard[i][j] = 1;
                 }
               }
             }
@@ -126,9 +130,9 @@ const CombinedBoards: React.FC = () => {
 
           if (genCount === generations) {
             let count = 0;
-            for (let i = 0; i < userBoardHeight; i++) {
-              for (let j = 0; j < userBoardWidth; j++) {
-                count += userList1[i][j] - userList2[i][j];
+            for (let i = 0; i < boardSize; i++) {
+              for (let j = 0; j < boardSize; j++) {
+                count += combinedBoard[i][j] === 1 ? 1 : combinedBoard[i][j] === 2 ? -1 : 0;
               }
             }
             if (count > 0) {
@@ -150,24 +154,17 @@ const CombinedBoards: React.FC = () => {
         return () => clearInterval(interval);
       }
     }
-  }, [userList1, userList2]);
+  }, [combinedBoard]);
 
   const render = (ctx: CanvasRenderingContext2D) => {
     if (ctx) {
       ctx.fillStyle = 'lightgray';
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      for (let y = 0; y < userBoardHeight; y++) {
-        for (let x = 0; x < userBoardWidth; x++) {
-          ctx.fillStyle = userList1[y][x] ? "black" : "white";
+      for (let y = 0; y < boardSize; y++) {
+        for (let x = 0; x < boardSize; x++) {
+          ctx.fillStyle = combinedBoard[y][x] === 1 ? "green" : combinedBoard[y][x] === 2 ? "red" : "white";
           ctx.fillRect(x * scale, y * scale, scale, scale);
-        }
-      }
-
-      for (let y = 0; y < userBoardHeight; y++) {
-        for (let x = 0; x < userBoardWidth; x++) {
-          ctx.fillStyle = userList2[y][x] ? "green" : "white";
-          ctx.fillRect(x * scale, (y + userBoardHeight) * scale, scale, scale);
         }
       }
     }
