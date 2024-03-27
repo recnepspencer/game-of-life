@@ -166,7 +166,7 @@ const CombinedBoards: React.FC = () => {
 
       for (let y = 0; y < userBoardHeight; y++) {
         for (let x = 0; x < userBoardWidth; x++) {
-          ctx.fillStyle = userList2[y][x] ? "black" : "white";
+          ctx.fillStyle = userList2[y][x] ? "green" : "white";
           ctx.fillRect(x * scale, (y + userBoardHeight) * scale, scale, scale);
         }
       }

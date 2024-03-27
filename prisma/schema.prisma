@@ -47,6 +47,8 @@ model FakeUser {
 }
 
 model TestGameObject {
-  id          Int      @id 
-  gridData   String    //Stores the game in a serialized format
+  id        Int     @id @default(autoincrement())  // Ensures `id` is autoincremented
+  gridData  String  // Assumes `gridData` will hold serialized data in a string format
+  userId    Int     @default(0)
+  user      User    @relation(fields: [userId], references: [id])
 }
