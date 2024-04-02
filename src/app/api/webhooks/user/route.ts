@@ -18,6 +18,7 @@ type Event = {
   type: "user.created" | "user.updated";
 };
 
+// gets clerk user data
 async function handler(request: Request) {
   if (!webhookSecret) {
     console.error('WEBHOOK_SECRET is not defined');
