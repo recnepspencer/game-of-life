@@ -230,6 +230,20 @@ const CombinedBoards4p: React.FC = () => {
           onChange={(e) => setBoard2Id(e.target.value)}
           style={{ color: 'black' }}
         />
+        <input
+          type="text"
+          placeholder="Board 3 ID"
+          value={board3Id}
+          onChange={(e) => setBoard3Id(e.target.value)}
+          style={{ color: 'black' }}
+        />
+        <input
+          type="text"
+          placeholder="Board 4 ID"
+          value={board4Id}
+          onChange={(e) => setBoard4Id(e.target.value)}
+          style={{ color: 'black' }}
+        />
         <button onClick={handleLoadBoards}>Load Boards</button>
       </div>
       <canvas
