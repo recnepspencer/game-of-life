@@ -41,7 +41,7 @@ async function handler(request: Request) {
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
     ) as any; // Temporarily using 'any' to bypass type checking. Consider defining a precise type.
     
-    // Assuming 'user.created' event type includes necessary user details
+    // Assuming 'user.created' event type includes necessary user details.
     if (event.type === "user.created") {
       const userData = event.data;
 
